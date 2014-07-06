@@ -48,7 +48,7 @@ function makeCoffee(sugars, flavor, size, callback){
  With Decree, arguments disambiguation is easy. You just declare the properties
  of your arguments, and let Decree resolve them for you:
 
- ```Javascript
+```Javascript
 var decree = require('decree');
 
 // argument declarations:
@@ -100,7 +100,7 @@ Each item in the array is an object which describes an argument.
  
  Tell it to Decree:
 
- ```Javascript
+```Javascript
 var decs = [{
     name: 'angle',
     type: 'number'
@@ -113,12 +113,12 @@ var decs = [{
     name: 'callback',
     type: 'function'
 }]
- ```
+```
 
  When finished declaring your expectations, use Decree to resolve your
  function's arguments:
 
- ```Javascript
+```Javascript
 var decree = require('decree');
 var decs = [ /* ... */ ];
 
@@ -165,7 +165,7 @@ When there is a problem with the arguments Decree can provide a detailed
 explanation of what went wrong. By default, an error object will be thrown,
 unless you provide a second callback which is called with the error.
 
- ```Javascript
+```Javascript
 var decree = require('decree');
 var decs = [ /* ... */ ];
 
@@ -179,7 +179,7 @@ function foo() {
         // 'err' contains the information you need
     });
 }
- ```
+```
 
 ### Built-in types
 
