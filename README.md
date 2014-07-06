@@ -134,7 +134,7 @@ function foo() {
 foo(45, 'green', function() {}); //angle: 45, color: green, callback: a function
 foo(45, function() {}); //angle: 45, color: white, callback: a function
 foo('green', function() {}); //oops... angle is not provided. error is thrown.
- ```
+```
 
 ### Declaration structure
 
