@@ -108,7 +108,7 @@
     function getDecree(list) {
         var pcs = getPcs(list.map(function(item, i) {
             item.__id = i;
-            if (!item.types) item.types = [item.type];
+            if (!item.types) item.types = [item.type || '*'];
             return item;
         }));
         return function(args, success, error) {
