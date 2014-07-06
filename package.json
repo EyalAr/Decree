@@ -14,7 +14,8 @@
     "declarative",
     "arguments",
     "resolve",
-    "disambiguate"
+    "disambiguate",
+    "match"
   ],
   "author": "Eyal Arubas <eyalarubas@gmail.com>",
   "license": "MIT",
