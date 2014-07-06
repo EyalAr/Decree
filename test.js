@@ -2,22 +2,18 @@ var decree = require('./index');
 
 // argument declarations:
 var decs = [{
-    name: 'sugars',
     type: 'nn-decimal', // non-negative decimal
     optional: true,
     default: 1
 }, {
-    name: 'flavor',
     type: 'string',
     optional: true,
     default: 'bitter'
 }, {
-    name: 'size',
     types: ['string', 'p-int'], // either a string or a positive integer
     optional: true,
     default: 'large'
 }, {
-    name: 'callback',
     type: 'function'
 }];
 
@@ -35,7 +31,7 @@ function makeCoffee() {
 makeCoffee(function(msg) {
     console.log(msg);
 });
-makeCoffee(5.5, function(msg) {
+makeCoffee(5, function(msg) {
     console.log(msg);
 });
 makeCoffee('bitter', 'large', function(msg) {

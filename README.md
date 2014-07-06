@@ -29,22 +29,18 @@ var decree = require('decree');
 
 // argument declarations:
 var decs = [{
-    name: 'sugars',
     type: 'nn-decimal', // non-negative decimal
     optional: true,
     default: 1
 }, {
-    name: 'flavor',
     type: 'string',
     optional: true,
     default: 'bitter'
 }, {
-    name: 'size',
     types: ['string', 'p-int'],
     optional: true,
     default: 'large'
 }, {
-    name: 'callback',
     type: 'function'
 }];
 
@@ -59,3 +55,41 @@ function makeCoffee() {
     });
 };
 ```
+
+## How to use
+
+Decree needs to know what you expect. Simply build an array to describe your
+argument expectations.
+
+```Javascript
+// declarations:
+var decs = [angle, color, callback];
+```
+
+Each item in the array is an object which describes an argument. `color` for
+example, is an optional argument. If not provided, it defaults to `white`. it
+can be a string (`white`, `green`, etc.), an array of RGB values
+`[255, 255, 255]`, or a hash `{r: 255, g: 255, b: 255}`.
+ 
+ Tell it to Decree:
+
+ ```Javascript
+ // color is:
+{
+    types: ['string', 'array', 'hash'],
+    optional: true,
+    default: 'white'
+}
+ ```
+
+ When finished declaring your expectations, use Decree to resolve your
+ function's arguments:
+
+ ```Javascript
+var decree = require('decree');
+var decs = [/* ... */];
+function foo(){
+    // pass your function's arguments directly to decree:
+    decree(decs)(arguments, function(angle, color, callback){});
+}
+ ```

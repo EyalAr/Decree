@@ -65,7 +65,7 @@
             _pcs.forEach(function(pc, i) {
                 var type = item.types[i % item.types.length];
                 pc.push({
-                    name: item.name,
+                    __id: item.__id,
                     type: type,
                     validator: validators[type]
                 });
@@ -93,11 +93,12 @@
     }
 
     module.exports = function(list) {
-        var pcs = getPcs(list.map(function(item) {
+        var pcs = getPcs(list.map(function(item, i) {
+            item.__id = i;
             if (!item.types) item.types = [item.type];
             return item;
         }));
-        return function dis(args, success, error) {
+        return function(args, success, error) {
             args = Array.prototype.slice.call(args, 0);
             var matchedPcs = match(pcs, args);
             if (matchedPcs.length === 1) {
@@ -105,7 +106,7 @@
                 var _args = [];
                 list.forEach(function(item) {
                     for (var i = 0; i < mpc.length; i++) {
-                        if (mpc[i].name === item.name) {
+                        if (mpc[i].__id === item.__id) {
                             _args.push(args[i]);
                             return;
                         }
@@ -114,9 +115,22 @@
                 });
                 success.apply(null, _args);
             } else if (matchedPcs.length === 0) {
-                error("Unkown arguments configuration");
+                error(["Unkown arguments configuration"]);
             } else {
-                error("Arguments ambiguity");
+                var errs = ["Arguments ambiguity"];
+                for (var i = 0; i < matchedPcs.length - 1; i++) {
+                    var mpc1 = matchedPcs[i];
+                    for (var j = i + 1; j < matchedPcs.length; j++) {
+                        var mpc2 = matchedPcs[j];
+                        for (var k = 0; k < mpc1.length; k++) {
+                            if (mpc1[k].type !== mpc2[k].type) {
+                                var err = "Argument " + k + " matches " + mpc1[k].type + " or " + mpc2[k].type;
+                                errs.push(err);
+                            }
+                        }
+                    }
+                }
+                error(errs);
             }
         };
     };
