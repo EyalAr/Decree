@@ -19,7 +19,19 @@
             return Object.prototype.toString.call(o) === '[object String]';
         },
         'number': function(o) {
-            return !(a === null || isNaN(a));
+            return !(o === null || isNaN(o));
+        },
+        'p-number': function(o) {
+            return validators['number'](o) && o > 0;
+        },
+        'n-number': function(o) {
+            return validators['number'](o) && o < 0;
+        },
+        'nn-number': function(o) {
+            return validators['number'](o) && o >= 0;
+        },
+        'np-number': function(o) {
+            return validators['number'](o) && o <= 0;
         },
         'int': function(o) {
             return o == parseInt(o);
@@ -66,6 +78,7 @@
                 var type = item.types[i % item.types.length];
                 pc.push({
                     __id: item.__id,
+                    name: item.name,
                     type: type,
                     validator: validators[type]
                 });
@@ -123,14 +136,18 @@
                     for (var j = i + 1; j < matchedPcs.length; j++) {
                         var mpc2 = matchedPcs[j];
                         for (var k = 0; k < mpc1.length; k++) {
-                            if (mpc1[k].type !== mpc2[k].type) {
-                                var err = "Argument " + k + " matches " + mpc1[k].type + " or " + mpc2[k].type;
+                            if (mpc1[k].__id !== mpc2[k].__id &&
+                                mpc1[k].validator(args[k]) === mpc2[k].validator(args[k])) {
+                                var mpc1name = mpc1[k].name || "declaration " + mpc1[k].__id,
+                                    mpc2name = mpc2[k].name || "declaration " + mpc2[k].__id;
+                                var err = "Argument " + k + " matches both " + mpc1name + " (" + mpc1[k].type + ") and " + mpc2name + " (" + mpc2[k].type + ")";
                                 errs.push(err);
                             }
                         }
                     }
                 }
-                error(errs);
+                if (validators['function'](error)) return error(errs);
+                throw errs;
             }
         };
     };
