@@ -10,7 +10,7 @@ Declarative arguments-resolver
 
 ## Overview
 
-Decree is a declarative arguments-resolved. It saves you time and code when you
+Decree is a declarative arguments-resolver. It saves you time and code when you
 need to do arguments validation and disambiguation in your APIs.
 
 Simply declare the conditions your arguments should hold, such as their types

@@ -128,7 +128,9 @@
                 });
                 success.apply(null, _args);
             } else if (matchedPcs.length === 0) {
-                error(["Unkown arguments configuration"]);
+                var errs = ["Unkown arguments configuration"];
+                if (validators['function'](error)) return error(errs);
+                throw errs;
             } else {
                 var errs = ["Arguments ambiguity"];
                 for (var i = 0; i < matchedPcs.length - 1; i++) {
