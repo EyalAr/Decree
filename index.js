@@ -105,7 +105,7 @@
         return res;
     }
 
-    module.exports = function(list) {
+    function getDecree(list) {
         var pcs = getPcs(list.map(function(item, i) {
             item.__id = i;
             if (!item.types) item.types = [item.type];
@@ -150,6 +150,8 @@
                 throw errs;
             }
         };
-    };
+    }
+
+    module.exports = getDecree;
 
 })(void 0);

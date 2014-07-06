@@ -1,0 +1,25 @@
+{
+  "name": "decree",
+  "version": "0.0.0",
+  "description": "Declarative arguments-resolver",
+  "main": "index.js",
+  "scripts": {
+    "test": "mocha --reporter spec --recursive tests/"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/EyalAr/Decree.git"
+  },
+  "keywords": [
+    "declarative",
+    "arguments",
+    "resolve",
+    "disambiguate"
+  ],
+  "author": "Eyal Arubas <eyalarubas@gmail.com>",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/EyalAr/Decree/issues"
+  },
+  "homepage": "https://github.com/EyalAr/Decree"
+}
