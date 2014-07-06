@@ -23,7 +23,9 @@ where was the problem.
 ## Example
 
 Let's say you have a function which takes 4 arguments. The task of verifying
-the legality of the arguments is oftentimes complicated and cumbersome:
+the legality of the arguments is oftentimes complicated and cumbersome.
+
+**Without Decree:**
 
 ```Javascript
 function makeCoffee(sugars, flavor, size, callback){
@@ -45,7 +47,7 @@ function makeCoffee(sugars, flavor, size, callback){
 }
 ```
 
- With Decree, arguments disambiguation is easy. You just declare the properties
+ **With Decree**, arguments disambiguation is easy. You just declare the properties
  of your arguments, and let Decree resolve them for you:
 
 ```Javascript
@@ -58,7 +60,7 @@ var decs = [{
     optional: true,
     default: 1
 }, {
-    'flavor',
+    name: 'flavor',
     type: 'string',
     optional: true,
     default: 'bitter'
@@ -68,6 +70,7 @@ var decs = [{
     optional: true,
     default: 'large'
 }, {
+    name: 'callback',
     type: 'function'
 }];
 
@@ -75,7 +78,7 @@ function makeCoffee() {
     decree(decs)(arguments, function(sugars, flavor, size, callback) {
         // arguments are disambiguated and ready to be used.
         // make coffee...
-        callback('Coffee is ready!);
+        callback('Coffee is ready!');
     });
 };
 ```
