@@ -109,6 +109,11 @@
         var pcs = getPcs(list.map(function(item, i) {
             item.__id = i;
             if (!item.types) item.types = [item.type || '*'];
+            item.types = item.types.map(function(type){
+                type = type.toLowerCase();
+                if (!validators[type]) throw Error('Unkown type ' + type);
+                return type;
+            });
             return item;
         }));
         return function(args, success, error) {
