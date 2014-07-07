@@ -1,6 +1,7 @@
 Declarative arguments-resolver
 
 0. [Overview](#overview)
+    0. [Install](#install)
 0. [Example](#example)
 0. [How to use](#how-to-use)
     0. [Declaration structure](#declaration-structure)
@@ -19,6 +20,10 @@ clean and disambiguated arguments.
 
 If the user provided an illegal combination of arguments, Decree will tell you
 where was the problem.
+
+### Install
+
+`npm install decree`
 
 ## Example
 
