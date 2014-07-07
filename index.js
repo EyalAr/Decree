@@ -109,7 +109,7 @@
         var pcs = getPcs(list.map(function(item, i) {
             item.__id = i;
             if (!item.types) item.types = [item.type || '*'];
-            item.types = item.types.map(function(type){
+            item.types = item.types.map(function(type) {
                 type = type.toLowerCase();
                 if (!validators[type]) throw Error('Unkown type ' + type);
                 return type;
@@ -133,7 +133,10 @@
                 });
                 success.apply(null, _args);
             } else if (matchedPcs.length === 0) {
-                var errs = ["Unkown arguments configuration"];
+                var errs = [
+                    "Unkown arguments configuration",
+                    Array.prototype.slice.call(args, 0)
+                ];
                 if (validators['function'](error)) return error(errs);
                 throw errs;
             } else {

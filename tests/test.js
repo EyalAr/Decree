@@ -3,7 +3,7 @@ var should = require("should"),
 
 describe('one type per argument', function() {
 
-    describe('none is optional', function() {
+    describe('3 args, none is optional', function() {
 
         var decs = [{
             type: 'string'
@@ -79,7 +79,7 @@ describe('one type per argument', function() {
 
     }); // none is optional
 
-    describe('first and third are optional', function() {
+    describe('3 args, first and third are optional', function() {
 
         var decs = [{
             type: 'string',
@@ -160,7 +160,7 @@ describe('one type per argument', function() {
 
 describe('multiple types per argument', function() {
 
-    describe('none is optional', function() {
+    describe('3 args, none is optional', function() {
 
         var decs = [{
             types: ['string', 'hash']
@@ -271,7 +271,7 @@ describe('multiple types per argument', function() {
 
     }); //none is optional
 
-    describe('first and second are optional', function() {
+    describe('3 args, first and second are optional', function() {
 
         var decs = [{
             types: ['string', 'hash'],
