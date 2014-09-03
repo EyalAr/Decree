@@ -120,6 +120,20 @@ describe('one type per argument', function() {
             describe('third argument missing', function() {
                 it('should not throw an error', function() {
                     test.bind(null, 'world', 1).should.not.throwError();
+
+                    function test() {
+                        decree(decs)(arguments, function(a1, a2, a3) {
+                            a1.should.be.a.String;
+                            a2.should.be.a.Number;
+                            a3.should.be.an.Object;
+                            a3.a = 'c';
+                        });
+                        decree(decs)(arguments, function(a1, a2, a3) {
+                            // the assignment a3.a = 'c' from before should have
+                            // no effect here.
+                            a3.a.should.be.equal('b');
+                        });
+                    }
                 });
             });
             describe('first and third arguments missing', function() {
