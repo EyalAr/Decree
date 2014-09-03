@@ -2,6 +2,8 @@
 
 (function(undefined) {
 
+    var clone = require('clone');
+
     var validators = {
         '*': function() {
             return true;
@@ -129,7 +131,7 @@
                             return;
                         }
                     }
-                    _args.push(item.default);
+                    _args.push(clone(item.default));
                 });
                 success.apply(null, _args);
             } else if (matchedPcs.length === 0) {
