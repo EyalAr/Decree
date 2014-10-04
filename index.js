@@ -49,21 +49,6 @@
         },
         'np-int': function(o) {
             return o == parseInt(o) && o <= 0;
-        },
-        'decimal': function(o) {
-            return o == parseFloat(o);
-        },
-        'n-decimal': function(o) {
-            return o == parseFloat(o) && o < 0;
-        },
-        'p-decimal': function(o) {
-            return o == parseFloat(o) && o > 0;
-        },
-        'nn-decimal': function(o) {
-            return o == parseFloat(o) && o >= 0;
-        },
-        'np-decimal': function(o) {
-            return o == parseFloat(o) && o <= 0;
         }
     };
 

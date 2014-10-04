@@ -1,8 +1,8 @@
-Declarative arguments-resolver
+# Declarative arguments-resolver
 
 0. [Overview](#overview)
     0. [Install](#install)
-0. [Example](#example)
+    0. [Example](#example)
 0. [How to use](#how-to-use)
     0. [Declaration structure](#declaration-structure)
     0. [Errors](#errors)
@@ -14,35 +14,46 @@ Declarative arguments-resolver
 Decree is a declarative arguments-resolver. It saves you time and code when you
 need to do arguments validation and disambiguation in your APIs.
 
-Simply declare the conditions your arguments should hold, such as their types
-and default values. Decree will take care of the rest, and provide you with
-clean and disambiguated arguments.
+Simply declare the conditions your arguments should hold, such as their types,
+whether they are optional and their default values. Decree will take care of the
+rest, and provide you with clean and disambiguated arguments.
 
-If the user provided an illegal combination of arguments, Decree will tell you
-where was the problem.
+If the user provided an illegal combination of arguments, Decree will throw an
+exception and tell you where was the problem.
 
 ### Install
 
 `npm install decree`
 
-## Example
+### Example
 
-Let's say you have a function which takes 4 arguments. The task of verifying
-the legality of the arguments is oftentimes complicated and cumbersome.
+Let's say you have a function which takes 4 arguments, some are optional. Inside
+the function you need to:
+
+0. Verify the types of the arguments.
+0. Detect which of the arguments were provided and which were omitted.
+0. Disambiguate and assign default values to omitted arguments.
 
 **Without Decree:**
 
 ```Javascript
+/**
+ * Make a cup of coffe.
+ * @param {number} [sugars=1] - number of sugars. non-negative decimal number. defaults to 1.
+ * @param {string} [flavor='bitter'] - flavor of the coffee. defaults to 'bitter'.
+ * @param {string|integer} [size='large'] - size of cup. 'small', 'medium', 'large' or a positive integer.
+ * @param {function} callback - called when coffee is ready.
+ */
 function makeCoffee(sugars, flavor, size, callback){
     // verify arguments:
-    //   sugar: optional, non-negative number. default: 1
-    //   type: optional, string. default: 'bitter'
-    //   size: optional, string or positive integer. default: 'large'
-    //   callback: required, function
     // was sugars provided? if not, flavor = sugars? size = flavor? callback = size?
     // but what if flavor was not provided...?
     // what about the callback? maybe callback = size? callback = flavor?
+    // is 'callback' a function? if not, throw an exception?
     // ...
+    // ...
+    // ...
+    // finally:
     if (/* arguments are valid */){
         // make coffee...
         callback('Coffee is ready!');
@@ -52,16 +63,14 @@ function makeCoffee(sugars, flavor, size, callback){
 }
 ```
 
- **With Decree**, arguments disambiguation is easy. You just declare the properties
- of your arguments, and let Decree resolve them for you:
+ **With Decree:**
+
+Simply decalare the properties of your arguments:
 
 ```Javascript
-var decree = require('decree');
-
-// argument declarations:
 var decs = [{
     name: 'sugars',
-    type: 'nn-decimal', // non-negative decimal
+    type: 'nn-number', // non-negative
     optional: true,
     default: 1
 }, {
@@ -71,57 +80,64 @@ var decs = [{
     default: 'bitter'
 }, {
     name: 'size',
-    types: ['string', 'p-int'],
+    types: ['string', 'p-int'], // string or positive integer
     optional: true,
     default: 'large'
 }, {
     name: 'callback',
     type: 'function'
 }];
+```
 
+Let Decree do the rest:
+
+```Javascript
+/**
+ * Make a cup of coffe.
+ * @param {number} [sugars=1] - number of sugars. non-negative decimal number. defaults to 1.
+ * @param {string} [flavor='bitter'] - flavor of the coffee. defaults to 'bitter'.
+ * @param {string|integer} [size='large'] - size of cup. 'small', 'medium', 'large' or a positive integer.
+ * @param {function} callback - called when coffee is ready.
+ */
 function makeCoffee() {
     decree(decs)(arguments, function(sugars, flavor, size, callback) {
         // arguments are disambiguated and ready to be used.
         // make coffee...
-        callback('Coffee is ready!');
+        callback(size + ' coffee is ready! ' + flavor + ' with ' + sugars + ' sugars.');
     });
 };
+```
+
+Now use your function as usual:
+
+```Javascript
+makeCoffe(1.5, function(msg){
+    console.log(msg); // 'large coffee is ready! bitter with 1.5 sugars.'
+});
+```
+
+On problems Decree will throw an exception:
+
+```Javascript
+try {
+    makeCoffe(-1.5, function(msg){});
+} catch (e) {
+    // 'sugars' can't be negative...
+}
 ```
 
 ## How to use
 
 Decree needs to know what you expect. Simply build an array to describe your
-argument expectations.
+arguments expectations.
 
 ```Javascript
 // declarations:
-var decs = [angle, color, callback];
+var decs = [arg1, arg2, arg3, ...];
 ```
 
-Each item in the array is an object which describes an argument.
-
-- `angle` is required and can only be a number.
-- `color` is an optional argument. If not provided, it defaults to `white`. it
-  can be a string (`white`, `green`, etc.), an array of RGB values
-  `[R, G, B]`, or a hash `{r: R, g: G, b: B}`.
-- `callback` is required and can only be a function.
- 
- Tell it to Decree:
-
-```Javascript
-var decs = [{
-    name: 'angle',
-    type: 'number'
-}, {
-    name: 'color',
-    types: ['string', 'array', 'hash'],
-    optional: true,
-    default: 'white'
-}, {
-    name: 'callback',
-    type: 'function'
-}]
-```
+Each item in the array is an object which describes an argument. See
+[declaration structure](#declaration-structure).
 
  When finished declaring your expectations, use Decree to resolve your
  function's arguments:
@@ -132,16 +148,16 @@ var decs = [ /* ... */ ];
 
 function foo() {
     // pass your function's arguments directly to decree:
-    decree(decs)(arguments, function(angle, color, callback) {
-        // here you can be sure angle, color and callback are of
+    decree(decs)(arguments, function(arg1, arg2, arg3, ...) {
+        // here you can be sure your arguments are of
         // the correct types and values
     });
 }
 
 // use foo as normal:
-foo(45, 'green', function() {}); //angle: 45, color: green, callback: a function
-foo(45, function() {}); //angle: 45, color: white, callback: a function
-foo('green', function() {}); //oops... angle is not provided. error is thrown.
+foo( ... );
+// if there is a problem with the provided arguments, an exception
+// is thrown.
 ```
 
 ### Declaration structure
@@ -150,9 +166,8 @@ When declaring an argument, tell Decree:
 
 0. `name {String}`: **Optional**. Will be used to identify the argument in error
    messages.
-0. `type {String/Function}` / `types{Array[String/Function]}`: **Required**.
-   See [built-in types](#built-in-types) or
-   [how to define a custom type](#custom-types).
+0. `type {String}` / `types{Array[String]}`: **Required**.
+   See [built-in types](#built-in-types).
 0. `optional {Boolean}`: **Optional**. Is this argument optional?
    Defaults to `false`.
 0. `default`: **Optional**. If the argument is optional, this default value will
@@ -175,15 +190,25 @@ unless you provide a second callback which is called with the error.
 
 ```Javascript
 var decree = require('decree');
-var decs = [ /* ... */ ];
 
+// with an exception:
 function foo() {
-    // pass your function's arguments directly to decree:
-    decree(decs)(arguments, function(angle, color, callback) {
-        // here you can be sure angle, color and callback are of
-        // the correct types and values
+    try {
+        decree(/* decs */)(arguments, function(/* args */) {
+            // ...
+        });
+    } catch (err) {
+        // if here, there was a problem with the arguments the user passed.
+        // 'err' contains the information you need
+    }
+}
+
+// or, with an error handling callback:
+function foo() {
+    decree(/* decs */)(arguments, function(/* args */) {
+        // ...
     }, function(err) {
-        // if here, there was a problem with the arguments the user passed
+        // if here, there was a problem with the arguments the user passed.
         // 'err' contains the information you need
     });
 }
@@ -208,11 +233,6 @@ Decree supports several argument types:
 - `p-int`: Argument is a positive integer
 - `nn-int`: Argument is a non-negative integer
 - `np-int`: Argument is a non-positive integer
-- `decimal`: Argument is a decimal number
-- `n-decimal`: Argument is a negative decimal number
-- `p-decimal`: Argument is a positive decimal number
-- `nn-decimal`: Argument is a non-negative decimal number
-- `np-decimal`: Argument is a non-positive decimal number
 
 ### Custom types
 
