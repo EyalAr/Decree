@@ -63,7 +63,7 @@ function makeCoffee(sugars, flavor, size, callback){
 }
 ```
 
- **With Decree:**
+**With Decree:**
 
 Simply decalare the properties of your arguments:
 
@@ -133,22 +133,45 @@ arguments expectations.
 
 ```Javascript
 // declarations:
-var decs = [arg1, arg2, arg3, ...];
+var decs = [{ /* arg 1 */}, { /* arg 2 */}, { /* arg 3 */}, ...];
 ```
 
 Each item in the array is an object which describes an argument. See
 [declaration structure](#declaration-structure).
 
- When finished declaring your expectations, use Decree to resolve your
- function's arguments:
+When finished declaring your expectations, use Decree to resolve an array of
+arguments. Calling `decree(...)` will construct a function which receives an
+array of arguments and disambiguates it.
+
+```Javascript
+var judge = decree(decs);
+```
+
+The constructed *judge* function has the following signature:
+
+`function judge(args, callback, errCallback)`
+
+0. `args {Array}` - The array of arguments to disambiguate.
+0. `callback {Function}` - an optional callback function which is called with
+   the disambiguated arguments.
+0. `errCallback {Function}` - an optional callback to handle arguments errors.
+   This function is called with the error, if there was an error disambiguating
+   the arguments array.
+
+**Note:**
+
+* If `errCallback` is omitted, and the is an error, an exception will be thrown.
+* If `callback` is omitted as well, `judge` will return an array of the
+  disambiguated arguments.
 
 ```Javascript
 var decree = require('decree');
 var decs = [ /* ... */ ];
+var judge = decree(decs);
 
 function foo() {
     // pass your function's arguments directly to decree:
-    decree(decs)(arguments, function(arg1, arg2, arg3, ...) {
+    judge(arguments, function(arg1, arg2, arg3, ...) {
         // here you can be sure your arguments are of
         // the correct types and values
     });
