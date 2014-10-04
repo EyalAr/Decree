@@ -18,8 +18,8 @@ Simply declare the conditions your arguments should hold, such as their types,
 whether they are optional and their default values. Decree will take care of the
 rest, and provide you with clean and disambiguated arguments.
 
-If the user provided an illegal combination of arguments, Decree will throw an
-exception and tell you where was the problem.
+If the user provided an illegal combination of arguments, Decree will tell you
+where was the problem.
 
 ### Install
 
@@ -103,7 +103,7 @@ function makeCoffee() {
     decree(decs)(arguments, function(sugars, flavor, size, callback) {
         // arguments are disambiguated and ready to be used.
         // make coffee...
-        callback(size + ' coffee is ready! ' + flavor + ' with ' + sugars + ' sugars.');
+        callback('Coffee is ready!');
     });
 };
 ```
@@ -112,18 +112,8 @@ Now use your function as usual:
 
 ```Javascript
 makeCoffe(1.5, function(msg){
-    console.log(msg); // 'large coffee is ready! bitter with 1.5 sugars.'
+    console.log(msg); // 'Coffee is ready!'
 });
-```
-
-On problems Decree will throw an exception:
-
-```Javascript
-try {
-    makeCoffe(-1.5, function(msg){});
-} catch (e) {
-    // 'sugars' can't be negative...
-}
 ```
 
 ## How to use
@@ -133,7 +123,7 @@ arguments expectations.
 
 ```Javascript
 // declarations:
-var decs = [{ /* arg 1 */}, { /* arg 2 */}, { /* arg 3 */}, ...];
+var decs = [{/* arg 1 */}, {/* arg 2 */}, {/* arg 3 */}, ...];
 ```
 
 Each item in the array is an object which describes an argument. See
@@ -144,7 +134,7 @@ arguments. Calling `decree(...)` will construct a function which receives an
 array of arguments and disambiguates it.
 
 ```Javascript
-var judge = decree(decs);
+var judge = decree(decs); // `judge` is a function
 ```
 
 The constructed *judge* function has the following signature:
@@ -161,26 +151,29 @@ The constructed *judge* function has the following signature:
 **Note:**
 
 * If `errCallback` is omitted, and the is an error, an exception will be thrown.
-* If `callback` is omitted as well, `judge` will return an array of the
+* If `callback` is omitted as well, `judge` will return the array of
   disambiguated arguments.
 
 ```Javascript
 var decree = require('decree');
-var decs = [ /* ... */ ];
+var decs = [ /* declarations of foo's arguments */ ];
 var judge = decree(decs);
 
 function foo() {
     // pass your function's arguments directly to decree:
     judge(arguments, function(arg1, arg2, arg3, ...) {
         // here you can be sure your arguments are of
-        // the correct types and values
+        // the correct types and values.
+    }, function(err){
+        // there was a problem with the provided arguments.
+        // log it, and throw an exception to the user.
+        console.log(err);
+        throw err;
     });
 }
 
 // use foo as normal:
 foo( ... );
-// if there is a problem with the provided arguments, an exception
-// is thrown.
 ```
 
 ### Declaration structure
