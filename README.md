@@ -239,6 +239,7 @@ Decree supports several argument types:
 - `function`
 - `hash`: Argument is a simple key-value object.
 - `string`
+- `boolean`
 - `number`
 - `n-number`: Argument is a negative number
 - `p-number`: Argument is a positive number

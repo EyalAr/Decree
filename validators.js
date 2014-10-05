@@ -18,7 +18,10 @@
             return Object.prototype.toString.call(o) === '[object String]';
         },
         'number': function(o) {
-            return !(o === null || isNaN(o));
+            return !(o === null || isNaN(o) || o === false || o === true);
+        },
+        'boolean': function(o) {
+            return o === false || o === true;
         },
         'p-number': function(o) {
             return validators['number'](o) && o > 0;
