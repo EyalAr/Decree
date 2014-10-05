@@ -75,7 +75,7 @@
                 else return _args;
             } else if (matchedPcs.length === 0) {
                 var errs = [
-                    "Unkown arguments configuration",
+                    "Unknown arguments configuration",
                     Array.prototype.slice.call(args, 0)
                 ];
                 if (validators['function'](error)) error(Error(errs));
