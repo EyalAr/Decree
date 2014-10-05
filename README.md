@@ -154,7 +154,8 @@ The constructed *judge* function has the following signature:
 
 **Note:**
 
-* If `errCallback` is omitted, and the is an error, an exception will be thrown.
+* If `errCallback` is omitted, and there is an error, an exception will be
+  thrown.
 * If `callback` is omitted as well, `judge` will return the array of
   disambiguated arguments.
 
@@ -187,7 +188,7 @@ When declaring an argument, tell Decree:
 0. `name {String}`: **Optional**. Will be used to identify the argument in error
    messages.
 0. `type {String}` / `types{Array[String]}`: **Required**.
-   See [built-in types](#built-in-types).
+   See [built-in types](#built-in-types) or [custom types](#custom-types).
 0. `optional {Boolean}`: **Optional**. Is this argument optional?
    Defaults to `false`.
 0. `default`: **Optional**. If the argument is optional, this default value will
@@ -201,6 +202,9 @@ When declaring an argument, tell Decree:
     default: ...
 }
 ```
+
+**Note:** If an optional argument has no default value, and that argument is
+omitted by the user, decree will assign this argument `undefined`.
 
 ### Errors
 
@@ -257,4 +261,28 @@ Decree supports several argument types:
 
 ### Custom types
 
-Coming soon
+Register a custom type with:
+
+`decree.resigter(name, validator)`
+
+0. `name {String}` - The name of the new type.
+0. `validator {Function}` - A validation function. Receives a value and should
+   return `true` or `false`.
+
+**Example:**
+
+```Javascript
+var decree = require('decree');
+
+// register a 'color' type:
+decree.register('color',function(v){
+    return ["blue", "red", "green", "yellow"].indexOf(v) !== -1;
+});
+
+// use it:
+var decs = [{
+    type: 'color',
+    optional: true,
+    default: "blue"
+}];
+```

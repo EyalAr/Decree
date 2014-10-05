@@ -144,7 +144,7 @@ describe('judge with an error handling callback', function() {
 
 });
 
-describe('arguments with default assignments are modified', function() {
+describe('arguments with default assignments modified by user', function() {
 
     var decs = [{
         type: 'hash',
@@ -278,7 +278,7 @@ describe('one type per argument', function() {
 
     }); // none is optional
 
-    describe('3 args, first and third are optional', function() {
+    describe('3 args, first and third are optional (with defaults)', function() {
 
         var decs = [{
             type: 'string',
@@ -407,7 +407,97 @@ describe('one type per argument', function() {
 
         });
 
-    }); // first and third are optional
+    }); // first and third are optional (with defaults)
+
+    describe('3 args, first and third are optional (without defaults)', function() {
+
+        var decs = [{
+            type: 'string',
+            optional: true
+        }, {
+            type: 'number'
+        }, {
+            type: 'hash',
+            optional: true
+        }];
+
+        var judge = decree(decs);
+
+        describe('function called with legal arguments', function() {
+
+            describe('all arguments provided', function() {
+
+                var args = ['hi', 10, {
+                    a: 'c'
+                }];
+                it('should be ok', function() {
+                    var called = false;
+                    judge(args, function(a1, a2, a3) {
+                        called = true;
+                        assert(a1 === 'hi');
+                        assert(a2 === 10);
+                        a3.should.be.an.Object;
+                        assert(a3.a === 'c');
+                    });
+                    called.should.be.true;
+                });
+
+            });
+
+            describe('first argument missing', function() {
+
+                var args = [10, {
+                    a: 'c'
+                }];
+                it('should be ok', function() {
+                    var called = false;
+                    judge(args, function(a1, a2, a3) {
+                        called = true;
+                        assert(a1 === undefined);
+                        assert(a2 === 10);
+                        a3.should.be.an.Object;
+                        assert(a3.a === 'c');
+                    });
+                    called.should.be.true;
+                });
+
+            });
+
+            describe('third argument missing', function() {
+
+                var args = ['hi', 1];
+                it('should be ok', function() {
+                    var called = false;
+                    judge(args, function(a1, a2, a3) {
+                        called = true;
+                        assert(a1 === 'hi');
+                        assert(a2 === 1);
+                        assert(a3 === undefined);
+                    });
+                    called.should.be.true;
+                });
+
+            });
+
+            describe('first and third arguments missing', function() {
+
+                var args = [1];
+                it('should be ok', function() {
+                    var called = false;
+                    judge(args, function(a1, a2, a3) {
+                        called = true;
+                        assert(a1 === undefined);
+                        assert(a2 === 1);
+                        assert(a3 === undefined);
+                    });
+                    called.should.be.true;
+                });
+
+            });
+
+        });
+
+    }); // first and third are optional (without defaults)
 
 }); // one type per argument
 
@@ -837,6 +927,6 @@ describe('multiple types per argument', function() {
 
         });
 
-    }); //first and third are optional
+    }); //first and third are optional (with defaults)
 
 }); // multiple types per argument

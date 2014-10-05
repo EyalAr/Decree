@@ -103,6 +103,15 @@
         };
     }
 
+    function register(name, validator) {
+        if (!validators.string(name))
+            throw Error("'name' must be a string");
+        if (!validators.function(validator))
+            throw Error("'name' must be a function");
+        validators[name] = validator;
+    }
+
     module.exports = getDecree;
+    module.exports.register = register;
 
 })(void 0);
