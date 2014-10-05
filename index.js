@@ -78,8 +78,8 @@
                     "Unkown arguments configuration",
                     Array.prototype.slice.call(args, 0)
                 ];
-                if (validators['function'](error)) return error(Error(errs));
-                throw Error(errs);
+                if (validators['function'](error)) error(Error(errs));
+                else throw Error(errs);
             } else {
                 var errs = ["Arguments ambiguity"];
                 for (var i = 0; i < matchedPcs.length - 1; i++) {
@@ -97,8 +97,8 @@
                         }
                     }
                 }
-                if (validators['function'](error)) return error(Error(errs));
-                throw Error(errs);
+                if (validators['function'](error)) error(Error(errs));
+                else throw Error(errs);
             }
         };
     }

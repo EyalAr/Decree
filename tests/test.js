@@ -59,11 +59,14 @@ describe('judge with a callback', function() {
             a: 'b'
         }];
         it('should be ok', function() {
+            var called = false;
             args = judge(args, function(a1, a2, a3) {
+                called = true;
                 a1.should.be.a.String;
                 a2.should.be.a.Number;
                 a3.should.be.an.Object;
             });
+            called.should.be.true;
         });
 
     });
@@ -74,9 +77,11 @@ describe('judge with a callback', function() {
             a: 'b'
         }];
         it('should throw an error', function() {
+            var called = false;
             judge.bind(null, args, function(a1, a2, a3) {
-                throw "should not be thrown";
+                called = true;
             }).should.throwError();
+            called.should.be.false;
         });
 
     });
@@ -101,13 +106,18 @@ describe('judge with an error handling callback', function() {
             a: 'b'
         }];
         it('should be ok', function() {
+            var cbCalled = false,
+                errCbCalled = false;
             args = judge(args, function(a1, a2, a3) {
+                cbCalled = true;
                 a1.should.be.a.String;
                 a2.should.be.a.Number;
                 a3.should.be.an.Object;
             }, function(err) {
-                throw "should not be thrown";
+                errCbCalled = true;
             });
+            cbCalled.should.be.true;
+            errCbCalled.should.be.false;
         });
 
     });
@@ -118,11 +128,16 @@ describe('judge with an error handling callback', function() {
             a: 'b'
         }];
         it('should call handler with an error', function() {
-            judge.bind(null, args, function(a1, a2, a3) {
-                throw "should not be thrown";
+            var cbCalled = false,
+                errCbCalled = false;
+            judge(args, function(a1, a2, a3) {
+                cbCalled = true;
             }, function(err) {
+                errCbCalled = true;
                 err.should.be.an.Error;
             });
+            cbCalled.should.be.false;
+            errCbCalled.should.be.true;
         });
 
     });
@@ -142,17 +157,23 @@ describe('arguments with default assignments are modified', function() {
     var judge = decree(decs);
 
     it('should should not affect default value', function() {
+        var called = false;
         judge([], function(a) {
+            called = true;
             a.should.be.an.Object;
             assert(a.a === 'b');
             // modify a (should not modify the default value):
             a.a = 'c';
             assert(a.a === 'c');
         });
+        called.should.be.true;
+        called = false;
         judge([], function(a) {
+            called = true;
             a.should.be.an.Object;
             assert(a.a === 'b'); // still 'b'
         });
+        called.should.be.true;
         assert(decs[0].default.a === 'b');
     });
 
@@ -178,11 +199,14 @@ describe('one type per argument', function() {
                 a: 'b'
             }];
             it('should be ok', function() {
+                var called = false;
                 judge(args, function(a1, a2, a3) {
+                    called = true;
                     a1.should.be.a.String;
                     a2.should.be.a.Number;
                     a3.should.be.an.Object;
                 });
+                called.should.be.true;
             });
 
         });
@@ -280,12 +304,15 @@ describe('one type per argument', function() {
                     a: 'c'
                 }];
                 it('should be ok', function() {
+                    var called = false;
                     judge(args, function(a1, a2, a3) {
+                        called = true;
                         assert(a1 === 'hi');
                         assert(a2 === 10);
                         a3.should.be.an.Object;
                         assert(a3.a === 'c');
                     });
+                    called.should.be.true;
                 });
 
             });
@@ -296,12 +323,15 @@ describe('one type per argument', function() {
                     a: 'c'
                 }];
                 it('should be ok', function() {
+                    var called = false;
                     judge(args, function(a1, a2, a3) {
+                        called = true;
                         assert(a1 === 'hello');
                         assert(a2 === 10);
                         a3.should.be.an.Object;
                         assert(a3.a === 'c');
                     });
+                    called.should.be.true;
                 });
 
             });
@@ -310,12 +340,15 @@ describe('one type per argument', function() {
 
                 var args = ['hi', 1];
                 it('should be ok', function() {
+                    var called = false;
                     judge(args, function(a1, a2, a3) {
+                        called = true;
                         assert(a1 === 'hi');
                         assert(a2 === 1);
                         a3.should.be.an.Object;
                         assert(a3.a === 'b');
                     });
+                    called.should.be.true;
                 });
 
             });
@@ -324,12 +357,15 @@ describe('one type per argument', function() {
 
                 var args = [1];
                 it('should be ok', function() {
+                    var called = false;
                     judge(args, function(a1, a2, a3) {
+                        called = true;
                         assert(a1 === 'hello');
                         assert(a2 === 1);
                         a3.should.be.an.Object;
                         assert(a3.a === 'b');
                     });
+                    called.should.be.true;
                 });
 
             });
@@ -344,9 +380,7 @@ describe('one type per argument', function() {
                     a: 'c'
                 }];
                 it('should throw an error', function() {
-                    judge.bind(null, args, function(a1, a2, a3) {
-                        throw "should not be thrown";
-                    }).should.throwError();
+                    judge.bind(null, args).should.throwError();
                 });
 
             });
@@ -355,9 +389,7 @@ describe('one type per argument', function() {
 
                 var args = ['hi', 1, 6];
                 it('should throw an error', function() {
-                    judge.bind(null, args, function(a1, a2, a3) {
-                        throw "should not be thrown";
-                    }).should.throwError();
+                    judge.bind(null, args).should.throwError();
                 });
 
             });
@@ -368,9 +400,7 @@ describe('one type per argument', function() {
                     a: 'c'
                 }];
                 it('should throw an error', function() {
-                    judge.bind(null, args, function(a1, a2, a3) {
-                        throw "should not be thrown";
-                    }).should.throwError();
+                    judge.bind(null, args).should.throwError();
                 });
 
             });
@@ -393,108 +423,315 @@ describe('multiple types per argument', function() {
             types: ['string', 'function', 'number']
         }];
 
-        describe('function called with legal arguments', function() {
-            function test() {
-                decree(decs)(arguments, function(a1, a2, a3) {
-                    //a1 should be a string or a hash:
-                    if (!(Object.prototype.toString.call(a1) === '[object Object]' ||
-                        Object.prototype.toString.call(a1) === '[object String]'))
-                        throw "a1 incorrect type";
-                    //a2 should be a hash or an array:
-                    if (!(Object.prototype.toString.call(a2) === '[object Object]' ||
-                        a2 instanceof Array))
-                        throw "a2 incorrect type";
-                    //a3 should be a Number, a string or a function:
-                    if (!(a3 == Number(a3) ||
-                        typeof a3 === 'function' ||
-                        Object.prototype.toString.call(a3) === '[object String]'))
-                        throw "a3 incorrect type";
-                });
-            }
-            it('should not throw an error', function() {
-                test.bind(null, 'hello', [1, 2, 3], 'world').should.not.throwError();
-                test.bind(null, 'hello', [1, 2, 3], function() {}).should.not.throwError();
-                test.bind(null, 'hello', [1, 2, 3], 1).should.not.throwError();
-                test.bind(null, {
-                    a: 'b'
-                }, [1, 2, 3], 'world').should.not.throwError();
-                test.bind(null, {
-                    a: 'b'
-                }, [1, 2, 3], function() {}).should.not.throwError();
-                test.bind(null, {
-                    a: 'b'
-                }, [1, 2, 3], 1).should.not.throwError();
-                test.bind(null, 'hello', {
-                    foo: 'bar'
-                }, 'world').should.not.throwError();
-                test.bind(null, 'hello', {
-                    foo: 'bar'
-                }, function() {}).should.not.throwError();
-                test.bind(null, 'hello', {
-                    foo: 'bar'
-                }, 1).should.not.throwError();
-                test.bind(null, {
-                    a: 'b'
-                }, {
-                    foo: 'bar'
-                }, 'world').should.not.throwError();
-                test.bind(null, {
-                    a: 'b'
-                }, {
-                    foo: 'bar'
-                }, function() {}).should.not.throwError();
-                test.bind(null, {
-                    a: 'b'
-                }, {
-                    foo: 'bar'
-                }, 1).should.not.throwError();
+        var judge = decree(decs);
+
+        describe('function called with legal arguments (1)', function() {
+
+            var args = ['hello', [1, 2, 3], 'world'];
+            it('should be ok', function() {
+                var called = false;
+                judge.bind(null, args, function(a1, a2, a3) {
+                    called = true;
+                    a1.should.be.a.String;
+                    a2.should.be.an.Array;
+                    a3.should.be.a.String;
+                }).should.not.throwError();
+                called.should.be.true;
             });
+
         });
 
-        describe('function called with illegal arguments', function() {
-            function test() {
-                decree(decs)(arguments, function(a1, a2, a3) {});
-            }
-            describe('illegal first argument', function() {
-                it('should throw an error', function() {
-                    test.bind(null, 1, [1, 2, 3], 1).should.throwError();
-                });
+        describe('function called with legal arguments (2)', function() {
+
+            var args = ['hello', [1, 2, 3],
+                function() {}
+            ];
+            it('should be ok', function() {
+                var called = false;
+                judge.bind(null, args, function(a1, a2, a3) {
+                    called = true;
+                    a1.should.be.a.String;
+                    a2.should.be.an.Array;
+                    a3.should.be.a.Function;
+                }).should.not.throwError();
+                called.should.be.true;
             });
-            describe('illegal second argument', function() {
-                it('should throw an error', function() {
-                    test.bind(null, 'hello', 'world', function() {}).should.throwError();
-                });
+
+        });
+
+        describe('function called with legal arguments (3)', function() {
+
+            var args = ['hello', [1, 2, 3], 1];
+            it('should be ok', function() {
+                var called = false;
+                judge.bind(null, args, function(a1, a2, a3) {
+                    called = true;
+                    a1.should.be.a.String;
+                    a2.should.be.an.Array;
+                    a3.should.be.a.Number;
+                }).should.not.throwError();
+                called.should.be.true;
             });
-            describe('illegal third argument', function() {
-                it('should throw an error', function() {
-                    test.bind(null, 'hello', [1, 2, 3], [1, 2, 3]).should.throwError();
-                });
+
+        });
+
+        describe('function called with legal arguments (4)', function() {
+
+            var args = [{
+                    a: 'b'
+                },
+                [1, 2, 3], 'world'
+            ];
+            it('should be ok', function() {
+                var called = false;
+                judge.bind(null, args, function(a1, a2, a3) {
+                    called = true;
+                    a1.should.be.an.Object;
+                    a2.should.be.an.Array;
+                    a3.should.be.a.String;
+                }).should.not.throwError();
+                called.should.be.true;
             });
-            describe('missing first argument', function() {
-                it('should throw an error', function() {
-                    test.bind(null, [1, 2, 3], 'hello').should.throwError();
-                });
+
+        });
+
+        describe('function called with legal arguments (5)', function() {
+
+            var args = [{
+                    a: 'b'
+                },
+                [1, 2, 3],
+                function() {}
+            ];
+            it('should be ok', function() {
+                var called = false;
+                judge.bind(null, args, function(a1, a2, a3) {
+                    called = true;
+                    a1.should.be.an.Object;
+                    a2.should.be.an.Array;
+                    a3.should.be.a.Function;
+                }).should.not.throwError();
+                called.should.be.true;
             });
-            describe('missing second argument', function() {
-                it('should throw an error', function() {
-                    test.bind(null, 'hello', -55).should.throwError();
-                });
+
+        });
+
+        describe('function called with legal arguments (6)', function() {
+
+            var args = [{
+                    a: 'b'
+                },
+                [1, 2, 3], 1
+            ];
+            it('should be ok', function() {
+                var called = false;
+                judge.bind(null, args, function(a1, a2, a3) {
+                    called = true;
+                    a1.should.be.an.Object;
+                    a2.should.be.an.Array;
+                    a3.should.be.a.Number;
+                }).should.not.throwError();
+                called.should.be.true;
             });
-            describe('missing third argument', function() {
-                it('should throw an error', function() {
-                    test.bind(null, 'hello', [1, 2, 3]).should.throwError();
-                });
+
+        });
+
+        describe('function called with legal arguments (7)', function() {
+
+            var args = ['hello', {
+                foo: 'bar'
+            }, 'world'];
+            it('should be ok', function() {
+                var called = false;
+                judge.bind(null, args, function(a1, a2, a3) {
+                    called = true;
+                    a1.should.be.a.String;
+                    a2.should.be.an.Object;
+                    a3.should.be.a.String;
+                }).should.not.throwError();
+                called.should.be.true;
             });
-            describe('no arguments', function() {
-                it('should throw an error', function() {
-                    test.bind(null).should.throwError();
-                });
+
+        });
+
+        describe('function called with legal arguments (8)', function() {
+
+            var args = ['hello', {
+                    foo: 'bar'
+                },
+                function() {}
+            ];
+            it('should be ok', function() {
+                var called = false;
+                judge.bind(null, args, function(a1, a2, a3) {
+                    called = true;
+                    a1.should.be.a.String;
+                    a2.should.be.an.Object;
+                    a3.should.be.a.Function;
+                }).should.not.throwError();
+                called.should.be.true;
             });
+
+        });
+
+        describe('function called with legal arguments (9)', function() {
+
+            var args = ['hello', {
+                    foo: 'bar'
+                },
+                1
+            ];
+            it('should be ok', function() {
+                var called = false;
+                judge.bind(null, args, function(a1, a2, a3) {
+                    called = true;
+                    a1.should.be.a.String;
+                    a2.should.be.an.Object;
+                    a3.should.be.a.Number;
+                }).should.not.throwError();
+                called.should.be.true;
+            });
+
+        });
+
+        describe('function called with legal arguments (10)', function() {
+
+            var args = [{
+                    a: 'b'
+                }, {
+                    foo: 'bar'
+                },
+                'world'
+            ];
+            it('should be ok', function() {
+                var called = false;
+                judge.bind(null, args, function(a1, a2, a3) {
+                    called = true;
+                    a1.should.be.an.Object;
+                    a2.should.be.an.Object;
+                    a3.should.be.a.String;
+                }).should.not.throwError();
+                called.should.be.true;
+            });
+
+        });
+
+        describe('function called with legal arguments (11)', function() {
+
+            var args = [{
+                    a: 'b'
+                }, {
+                    foo: 'bar'
+                },
+                function() {}
+            ];
+            it('should be ok', function() {
+                var called = false;
+                judge.bind(null, args, function(a1, a2, a3) {
+                    called = true;
+                    a1.should.be.an.Object;
+                    a2.should.be.an.Object;
+                    a3.should.be.a.Function;
+                }).should.not.throwError();
+                called.should.be.true;
+            });
+
+        });
+
+        describe('function called with legal arguments (12)', function() {
+
+            var args = [{
+                    a: 'b'
+                }, {
+                    foo: 'bar'
+                },
+                1
+            ];
+            it('should be ok', function() {
+                var called = false;
+                judge.bind(null, args, function(a1, a2, a3) {
+                    called = true;
+                    a1.should.be.an.Object;
+                    a2.should.be.an.Object;
+                    a3.should.be.a.Number;
+                }).should.not.throwError();
+                called.should.be.true;
+            });
+
+        });
+
+        describe('function called with illegal arguments (1)', function() {
+
+            var args = [1, [1, 2, 3], 1];
+            it('should not be ok', function() {
+                judge.bind(null, args).should.throwError();
+            });
+
+        });
+
+        describe('function called with illegal arguments (2)', function() {
+
+            var args = ['hello', 'world',
+                function() {}
+            ];
+            it('should not be ok', function() {
+                judge.bind(null, args).should.throwError();
+            });
+
+        });
+
+        describe('function called with illegal arguments (3)', function() {
+
+            var args = ['hello', [1, 2, 3],
+                [1, 2, 3]
+            ];
+            it('should not be ok', function() {
+                judge.bind(null, args).should.throwError();
+            });
+
+        });
+
+        describe('function called with missing first argument', function() {
+
+            var args = [
+                [1, 2, 3], 'hello'
+            ];
+            it('should not be ok', function() {
+                judge.bind(null, args).should.throwError();
+            });
+
+        });
+
+        describe('function called with missing second argument', function() {
+
+            var args = ['hello', -55];
+            it('should not be ok', function() {
+                judge.bind(null, args).should.throwError();
+            });
+
+        });
+
+        describe('function called with missing third argument', function() {
+
+            var args = ['hello', [1, 2, 3]];
+            it('should not be ok', function() {
+                judge.bind(null, args).should.throwError();
+            });
+
+        });
+
+        describe('function called with no arguments', function() {
+
+            var args = [];
+            it('should not be ok', function() {
+                judge.bind(null, args).should.throwError();
+            });
+
         });
 
     }); //none is optional
 
-    describe('3 args, first and second are optional', function() {
+    describe('3 args, first and second are optional (with defaults)', function() {
 
         var decs = [{
             types: ['string', 'hash'],
@@ -508,49 +745,98 @@ describe('multiple types per argument', function() {
             types: ['string', 'function', 'number']
         }];
 
-        describe('function called with legal arguments', function() {
-            function test() {
-                decree(decs)(arguments, function(a1, a2, a3) {
-                    //a1 should be a string or a hash:
-                    if (!(Object.prototype.toString.call(a1) === '[object Object]' ||
-                        Object.prototype.toString.call(a1) === '[object String]'))
-                        throw "a1 incorrect type";
-                    //a2 should be a hash or an array:
-                    if (!(Object.prototype.toString.call(a2) === '[object Object]' ||
-                        a2 instanceof Array))
-                        throw "a2 incorrect type";
-                    //a3 should be a Number, a string or a function:
-                    if (!(a3 == Number(a3) ||
-                        typeof a3 === 'function' ||
-                        Object.prototype.toString.call(a3) === '[object String]'))
-                        throw "a3 incorrect type";
-                });
-            }
-            it('should not throw an error', function() {
-                test.bind(null, {
+        var judge = decree(decs);
+
+        describe('function called with legal arguments (1)', function() {
+
+            var args = [{
                     a: 'b'
                 }, {
                     a: 'b'
-                }, 0.99).should.not.throwError();
-                test.bind(null, [1, 2, 3], function() {}).should.not.throwError();
-                test.bind(null, 'hello', 1).should.not.throwError();
-                test.bind(null, 1).should.not.throwError();
+                },
+                0.99
+            ];
+            it('should be ok', function() {
+                var called = false;
+                judge.bind(null, args, function(a1, a2, a3) {
+                    called = true;
+                    a1.should.be.an.Object;
+                    a2.should.be.an.Object;
+                    a3.should.be.a.Number;
+                }).should.not.throwError();
+                called.should.be.true;
             });
+
+        });
+
+        describe('function called with legal arguments (2)', function() {
+
+            var args = [
+                [1, 2, 3],
+                function() {}
+            ];
+            it('should be ok', function() {
+                var called = false;
+                judge.bind(null, args, function(a1, a2, a3) {
+                    called = true;
+                    a1.should.be.a.String;
+                    a2.should.be.an.Array;
+                    a3.should.be.a.Function;
+                }).should.not.throwError();
+                called.should.be.true;
+            });
+
+        });
+
+        describe('function called with legal arguments (3)', function() {
+
+            var args = ['hello', 1];
+            it('should be ok', function() {
+                var called = false;
+                judge.bind(null, args, function(a1, a2, a3) {
+                    called = true;
+                    a1.should.be.a.String;
+                    a2.should.be.an.Array;
+                    a3.should.be.a.Number;
+                }).should.not.throwError();
+                called.should.be.true;
+            });
+
+        });
+
+        describe('function called with legal arguments (4)', function() {
+
+            var args = [1];
+            it('should be ok', function() {
+                var called = false;
+                judge.bind(null, args, function(a1, a2, a3) {
+                    called = true;
+                    a1.should.be.a.String;
+                    a2.should.be.an.Array;
+                    a3.should.be.a.Number;
+                }).should.not.throwError();
+                called.should.be.true;
+            });
+
         });
 
         describe('function called with illegal arguments', function() {
-            function test() {
-                decree(decs)(arguments, function(a1, a2, a3) {});
-            }
+
             describe('ambiguity between first and second arguments', function() {
-                it('should throw an error', function() {
-                    test.bind(null, {
+
+                var args = [{
                         a: 'b'
-                    }, 543).should.throwError();
+                    },
+                    1
+                ];
+                it('should not be ok', function() {
+                    judge.bind(null, args).should.throwError();
                 });
+
             });
+
         });
 
     }); //first and third are optional
 
-}); // one type per argument
+}); // multiple types per argument
