@@ -1,3 +1,7 @@
+[![Version](http://img.shields.io/npm/v/decree.svg)](https://www.npmjs.org/package/decree)
+[![Build Status](https://api.travis-ci.org/EyalAr/decree.svg?branch=master)](https://travis-ci.org/EyalAr/decree)
+[![Coverage Status](https://img.shields.io/coveralls/EyalAr/decree/master.svg)](https://coveralls.io/r/EyalAr/decree)
+
 # Declarative arguments-resolver
 
 0. [Overview](#overview)
