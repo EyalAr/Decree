@@ -42,7 +42,7 @@ the function you need to:
 
 ```Javascript
 /**
- * Make a cup of coffe.
+ * Make a cup of coffee.
  * @param {number} [sugars=1] - number of sugars. non-negative decimal number. defaults to 1.
  * @param {string} [flavor='bitter'] - flavor of the coffee. defaults to 'bitter'.
  * @param {string|integer} [size='large'] - size of cup. 'small', 'medium', 'large' or a positive integer.
@@ -97,7 +97,7 @@ Let Decree do the rest:
 
 ```Javascript
 /**
- * Make a cup of coffe.
+ * Make a cup of coffee.
  * @param {number} [sugars=1] - number of sugars. non-negative decimal number. defaults to 1.
  * @param {string} [flavor='bitter'] - flavor of the coffee. defaults to 'bitter'.
  * @param {string|integer} [size='large'] - size of cup. 'small', 'medium', 'large' or a positive integer.
@@ -115,7 +115,7 @@ function makeCoffee() {
 Now use your function as usual:
 
 ```Javascript
-makeCoffe(1.5, function(msg){
+makeCoffee(1.5, function(msg){
     console.log(msg); // 'Coffee is ready!'
 });
 ```
