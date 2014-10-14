@@ -1,6 +1,6 @@
 /**
  * @name decree
- * @amd clone ../../bower_components/lodash-amd/compat/objects/cloneDeep
+ * @amd clone ../../../lodash-amd/compat/objects/cloneDeep
  * @cjs clone lodash-node/compat/objects/cloneDeep
  */
 function decreeFactory(clone, validators) {

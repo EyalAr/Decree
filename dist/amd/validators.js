@@ -1,12 +1,12 @@
 define([
-    '../../bower_components/lodash-amd/compat/objects/isArray',
-    '../../bower_components/lodash-amd/compat/objects/isFunction',
-    '../../bower_components/lodash-amd/compat/objects/isPlainObject',
-    '../../bower_components/lodash-amd/compat/objects/isString',
-    '../../bower_components/lodash-amd/compat/objects/isRegExp',
-    '../../bower_components/lodash-amd/compat/objects/isBoolean',
-    '../../bower_components/lodash-amd/compat/objects/isDate',
-    '../../bower_components/lodash-amd/compat/objects/isNumber'
+    '../../../lodash-amd/compat/objects/isArray',
+    '../../../lodash-amd/compat/objects/isFunction',
+    '../../../lodash-amd/compat/objects/isPlainObject',
+    '../../../lodash-amd/compat/objects/isString',
+    '../../../lodash-amd/compat/objects/isRegExp',
+    '../../../lodash-amd/compat/objects/isBoolean',
+    '../../../lodash-amd/compat/objects/isDate',
+    '../../../lodash-amd/compat/objects/isNumber'
 ], function validatorsFactory(isArray, isFunction, isPlainObject, isString, isRegExp, isBoolean, isDate, isNumber) {
     var validators = {
         '*': function () {

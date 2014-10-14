@@ -1,5 +1,5 @@
 define([
-    '../../bower_components/lodash-amd/compat/objects/cloneDeep',
+    '../../../lodash-amd/compat/objects/cloneDeep',
     './validators'
 ], function decreeFactory(clone, validators) {
     function getPcs(list) {

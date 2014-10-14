@@ -1,7 +1,12 @@
 SRC_DIR=src
 SRC_FILES=decree.js validators.js
 DIST_DIR=dist
+TESTS_DIR=tests
 FUME=../node_modules/.bin/fume
+MOCHA=./node_modules/.bin/mocha
+_MOCHA=./node_modules/.bin/_mocha
+ISTANBUL=./node_modules/.bin/istanbul
+COVERALLS=./node_modules/coveralls/bin/coveralls.js
 
 install:
 	npm install
@@ -18,10 +23,10 @@ rm_dist:
 dist: rm_dist dist_amd dist_cjs
 
 test: dist
-	./node_modules/.bin/mocha --recursive --reporter spec tests
+	$(MOCHA) --recursive --reporter spec $(TESTS_DIR)
 
 coverage: dist
-	./node_modules/.bin/istanbul cover ./node_modules/mocha/bin/_mocha -- --recursive --reporter spec tests
+	$(ISTANBUL) cover $(_MOCHA) -- --recursive --reporter spec $(TESTS_DIR)
 
 travis: install dist
-	./node_modules/.bin/istanbul cover --report lcovonly ./node_modules/.bin/_mocha -- --recursive --reporter spec --bail tests && cat ./coverage/lcov.info | ./node_modules/coveralls/bin/coveralls.js
+	$(ISTANBUL) cover --report lcovonly $(_MOCHA) -- --recursive --reporter spec --bail $(TESTS_DIR) && cat ./coverage/lcov.info | $(COVERALLS)
