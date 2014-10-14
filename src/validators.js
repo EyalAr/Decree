@@ -1,13 +1,13 @@
 /**
  * @name validators
- * @amd isArray ../../bower_components/lodash-amd/compat/objects/isArray
- * @amd isFunction ../../bower_components/lodash-amd/compat/objects/isFunction
- * @amd isPlainObject ../../bower_components/lodash-amd/compat/objects/isPlainObject
- * @amd isString ../../bower_components/lodash-amd/compat/objects/isString
- * @amd isRegExp ../../bower_components/lodash-amd/compat/objects/isRegExp
- * @amd isBoolean ../../bower_components/lodash-amd/compat/objects/isBoolean
- * @amd isDate ../../bower_components/lodash-amd/compat/objects/isDate
- * @amd isNumber ../../bower_components/lodash-amd/compat/objects/isNumber
+ * @amd isArray ../../../lodash-amd/compat/objects/isArray
+ * @amd isFunction ../../../lodash-amd/compat/objects/isFunction
+ * @amd isPlainObject ../../../lodash-amd/compat/objects/isPlainObject
+ * @amd isString ../../../lodash-amd/compat/objects/isString
+ * @amd isRegExp ../../../lodash-amd/compat/objects/isRegExp
+ * @amd isBoolean ../../../lodash-amd/compat/objects/isBoolean
+ * @amd isDate ../../../lodash-amd/compat/objects/isDate
+ * @amd isNumber ../../../lodash-amd/compat/objects/isNumber
  * @cjs isArray lodash-node/compat/objects/isArray
  * @cjs isFunction lodash-node/compat/objects/isFunction
  * @cjs isPlainObject lodash-node/compat/objects/isPlainObject
