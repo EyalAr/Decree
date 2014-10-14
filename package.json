@@ -2,11 +2,9 @@
   "name": "decree",
   "version": "0.0.3",
   "description": "Declarative arguments-resolver",
-  "main": "index.js",
+  "main": "decree.js",
   "scripts": {
-    "test": "./node_modules/.bin/mocha --recursive --reporter spec tests",
-    "coverage": "./node_modules/.bin/istanbul cover ./node_modules/mocha/bin/_mocha -- --recursive --reporter spec tests",
-    "travis": "./node_modules/.bin/istanbul cover --report lcovonly ./node_modules/.bin/_mocha -- --recursive --reporter spec --bail tests && cat ./coverage/lcov.info | ./node_modules/coveralls/bin/coveralls.js"
+    "test": "make test"
   },
   "repository": {
     "type": "git",
@@ -27,13 +25,15 @@
   "homepage": "https://github.com/EyalAr/Decree",
   "devDependencies": {
     "coveralls": "^2.11.1",
+    "fume": "0.0.0",
     "istanbul": "^0.3.2",
     "mkdirp": "^0.5.0",
     "mocha": "^1.20.1",
     "mocha-lcov-reporter": "0.0.1",
+    "requirejs": "^2.1.15",
     "should": "^4.0.4"
   },
   "dependencies": {
-    "clone": "^0.1.18"
+    "lodash-node": "^2.4.1"
   }
 }

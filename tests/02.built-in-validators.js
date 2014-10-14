@@ -420,6 +420,176 @@ describe('built-in validators', function() {
 
     });
 
+    describe('regexp', function() {
+
+        var judge = decree([{
+            type: 'regexp'
+        }]);
+
+        describe('with legal arguments', function() {
+            var args = [/.*/];
+            it('should be ok', function() {
+                judge(args)[0].should.be.a.RegExp;
+            });
+        });
+
+        describe('with illegal arguments (1)', function() {
+            var args = [{
+                a: 'b'
+            }];
+            it('should not be ok', function() {
+                judge.bind(null, args).should.throwError();
+            });
+        });
+
+        describe('with illegal arguments (2)', function() {
+            var args = [1];
+            it('should not be ok', function() {
+                judge.bind(null, args).should.throwError();
+            });
+        });
+
+        describe('with illegal arguments (3)', function() {
+            var args = [1.1];
+            it('should not be ok', function() {
+                judge.bind(null, args).should.throwError();
+            });
+        });
+
+        describe('with illegal arguments (4)', function() {
+            var args = [
+
+                function() {}
+            ];
+            it('should not be ok', function() {
+                judge.bind(null, args).should.throwError();
+            });
+        });
+
+        describe('with illegal arguments (5)', function() {
+            var args = [
+                [1, 2, 3]
+            ];
+            it('should not be ok', function() {
+                judge.bind(null, args).should.throwError();
+            });
+        });
+
+        describe('with illegal arguments (6)', function() {
+            var args = [false];
+            it('should not be ok', function() {
+                judge.bind(null, args).should.throwError();
+            });
+        });
+
+        describe('with illegal arguments (7)', function() {
+            var args = [null];
+            it('should not be ok', function() {
+                judge.bind(null, args).should.throwError();
+            });
+        });
+
+        describe('with illegal arguments (8)', function() {
+            var args = [undefined];
+            it('should not be ok', function() {
+                judge.bind(null, args).should.throwError();
+            });
+        });
+
+        describe('with missing argument', function() {
+            var args = [];
+            it('should not be ok', function() {
+                judge.bind(null, args).should.throwError();
+            });
+        });
+
+    });
+
+    describe('date', function() {
+
+        var judge = decree([{
+            type: 'date'
+        }]);
+
+        describe('with legal arguments', function() {
+            var args = [new Date()];
+            it('should be ok', function() {
+                judge(args)[0].should.be.a.Date;
+            });
+        });
+
+        describe('with illegal arguments (1)', function() {
+            var args = [{
+                a: 'b'
+            }];
+            it('should not be ok', function() {
+                judge.bind(null, args).should.throwError();
+            });
+        });
+
+        describe('with illegal arguments (2)', function() {
+            var args = [1];
+            it('should not be ok', function() {
+                judge.bind(null, args).should.throwError();
+            });
+        });
+
+        describe('with illegal arguments (3)', function() {
+            var args = [1.1];
+            it('should not be ok', function() {
+                judge.bind(null, args).should.throwError();
+            });
+        });
+
+        describe('with illegal arguments (4)', function() {
+            var args = [
+
+                function() {}
+            ];
+            it('should not be ok', function() {
+                judge.bind(null, args).should.throwError();
+            });
+        });
+
+        describe('with illegal arguments (5)', function() {
+            var args = [
+                [1, 2, 3]
+            ];
+            it('should not be ok', function() {
+                judge.bind(null, args).should.throwError();
+            });
+        });
+
+        describe('with illegal arguments (6)', function() {
+            var args = [false];
+            it('should not be ok', function() {
+                judge.bind(null, args).should.throwError();
+            });
+        });
+
+        describe('with illegal arguments (7)', function() {
+            var args = [null];
+            it('should not be ok', function() {
+                judge.bind(null, args).should.throwError();
+            });
+        });
+
+        describe('with illegal arguments (8)', function() {
+            var args = [undefined];
+            it('should not be ok', function() {
+                judge.bind(null, args).should.throwError();
+            });
+        });
+
+        describe('with missing argument', function() {
+            var args = [];
+            it('should not be ok', function() {
+                judge.bind(null, args).should.throwError();
+            });
+        });
+
+    });
+
     describe('boolean', function() {
 
         var judge = decree([{

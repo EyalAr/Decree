@@ -27,7 +27,10 @@ where was the problem.
 
 ### Install
 
-`npm install decree`
+0. **To use in Node, install with npm:** `npm install decree`
+0. **To use in the browser, install with bower:** `bower install decree`
+   On the browser Decree loads as an AMD module (see example in
+   [`examples/amd`](examples/amd)).
 
 ### Example
 
@@ -247,7 +250,9 @@ Decree supports several argument types:
 - `function`
 - `hash`: Argument is a simple key-value object.
 - `string`
+- `regexp`: Argument is a regular expression.
 - `boolean`
+- `date`: Argument is a Date object.
 - `number`
 - `n-number`: Argument is a negative number
 - `p-number`: Argument is a positive number

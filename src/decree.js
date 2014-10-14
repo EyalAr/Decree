@@ -1,27 +1,9 @@
-'use strict';
-
-(function(root, factory) {
-
-    /* istanbul ignore next */
-
-    if (typeof define === 'function' && define.amd) { // amd
-
-        define(['clone', 'validators'], factory);
-
-    } else if (typeof exports === 'object') { // node
-
-        module.exports = factory(
-            require('clone'),
-            require('./validators')
-        );
-
-    } else { // global
-
-        root.Decree = factory(root.clone, root.DecreeValidators);
-
-    }
-
-}(this, function(clone, validators) {
+/**
+ * @name decree
+ * @amd clone ../../bower_components/lodash-amd/compat/objects/cloneDeep
+ * @cjs clone lodash-node/compat/objects/cloneDeep
+ */
+function decreeFactory(clone, validators) {
 
     function getPcs(list) {
         // possible configurations
@@ -133,4 +115,4 @@
 
     return getJudge;
 
-}));
+}
