@@ -28,8 +28,8 @@ where was the problem.
 ### Install
 
 0. **To use in Node, install with npm:** `npm install decree`
-0. **To use in the browser, install with bower:** `bower install decree`
-   On the browser Decree loads as an AMD module (see example in
+0. **To use in the browser, install with bower:** `bower install decree`  
+   On the browser Decree loads as an AMD module (see
    [`examples/amd`](examples/amd)).
 
 ### Example

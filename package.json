@@ -4,7 +4,8 @@
   "description": "Declarative arguments-resolver",
   "main": "decree.js",
   "scripts": {
-    "test": "make test"
+    "test": "make test",
+    "prepublish": "make dist"
   },
   "repository": {
     "type": "git",
